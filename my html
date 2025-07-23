@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bitcoin ₹ Price Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+  <!-- Hero Section -->
+  <div class="bg-[url('https://images.pexels.com/photos/730564/pexels-photo-730564.jpeg')] bg-cover bg-center py-20">
+    <div class="container mx-auto text-center bg-black bg-opacity-50 p-6 rounded-lg">
+      <h1 class="text-5xl font-bold mb-4">Bitcoin ₹ Price Tracker</h1>
+      <p class="text-xl">Real‑time prices in multiple currencies and Bitcoin types</p>
+    </div>
+  </div>
+
+  <!-- Price Display & Features -->
+  <div class="container mx-auto p-6 space-y-6">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-3xl mb-4">Current Prices</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- BTC Prices -->
+        <div class="bg-gray-700 p-4 rounded-lg">
+          <h3 class="text-xl font-semibold mb-3 flex items-center">
+            <i class="fab fa-bitcoin text-orange-500 text-2xl mr-2"></i> BTC Prices
+          </h3>
+          <ul id="btc-currency-prices" class="space-y-2"></ul>
+        </div>
+
+        <!-- Bitcoin Types Prices -->
+        <div class="bg-gray-700 p-4 rounded-lg">
+          <h3 class="text-xl font-semibold mb-3 flex items-center">
+            <i class="fas fa-coins text-yellow-400 text-2xl mr-2"></i> Bitcoin Types
+          </h3>
+          <ul id="bitcoin-types-prices" class="space-y-2"></ul>
+        </div>
+
+        <!-- Portfolio Calculator -->
+        <div class="bg-gray-700 p-4 rounded-lg">
+          <h3 class="text-xl font-semibold mb-3">Portfolio Calculator</h3>
+          <label class="block text-gray-300 mb-2">Your Bitcoin Amount (BTC)</label>
+          <input type="number" id="btc-amount" min="0" step="0.00000001"
+            class="w-full p-3 rounded bg-gray-600 border border-gray-500 focus:border-orange-500 mb-4" placeholder="0.00" />
+
+          <label class="block text-gray-300 mb-2">Select Currency</label>
+          <select id="currency-select"
+            class="w-full p-3 rounded bg-gray-600 border border-gray-500 focus:border-orange-500">
+            <option value="inr" selected>INR (₹)</option>
+            <option value="usd">USD ($)</option>
+            <option value="eur">EUR (€)</option>
+            <option value="gbp">GBP (£)</option>
+            <option value="jpy">JPY (¥)</option>
+          </select>
+
+          <div class="mt-4 text-xl">
+            <span class="text-gray-400">Portfolio Value: </span>
+            <span id="portfolio-value" class="font-bold">₹0.00</span>
+          </div>
+          <div class="mt-2 text-lg">
+            <span class="text-gray-400">Profit/Loss (7 days): </span>
+            <span id="profit-value" class="font-bold">₹0.00</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-3xl mb-4">7-Day BTC Price Trend (INR)</h2>
+      <canvas id="price-chart" height="300"></canvas>
+    </div>
+
+    <!-- Stock Index -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-3xl mb-4">Stock Index (Nifty 50)</h2>
+      <div class="flex items-center justify-between text-xl">
+        <div>
+          <span id="stock-index-value" class="font-bold">Loading...</span>
+          <span id="stock-index-change" class="ml-4"></span>
+        </div>
+        <i class="fas fa-chart-line text-green-500 text-3xl"></i>
+      </div>
+    </div>
+
+    <!-- News Section -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-3xl mb-4">Latest Bitcoin & Stock Market News</h2>
+      <ul id="news-list" class="list-disc list-inside space-y-2 max-h-64 overflow-y-auto"></ul>
+    </div>
+  </div>
+
+  <!-- Footer & Nav -->
+  <footer class="bg-gray-800 p-4 mt-12 text-center text-gray-400 text-sm">
+    &copy; 2024 Bitcoin Price Tracker. All rights reserved. |
+    <a href="https://www.coingecko.com" target="_blank" class="text-orange-500 hover:underline">Data by CoinGecko</a>
+  </footer>
+
+  <div class="fixed bottom-0 left-0 w-full bg-gray-800 p-4 flex justify-center">
+    <a href="predict.html"
+      class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-bold transition-colors flex items-center">
+      Predict ₹ Price <i class="fas fa-arrow-right ml-2"></i>
+    </a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Bitcoin Price Prediction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+</head>
+<body class="bg-gray-900 text-white font-sans flex flex-col items-center justify-center min-h-screen p-6">
+
+  <h1 class="text-5xl font-bold mb-6">Bitcoin Price Prediction</h1>
+  <form id="prediction-form" class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+    <label for="date-input" class="block text-gray-300 mb-2">Select Date for Prediction</label>
+    <input type="date" id="date-input" name="date-input"
+      class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-orange-500 mb-4" required />
+
+    <label for="currency-select" class="block text-gray-300 mb-2">Select Currency</label>
+    <select id="currency-select" name="currency-select"
+      class="w-full p-3 rounded bg-gray-600 border border-gray-500 focus:border-orange-500 mb-4">
+      <option value="inr" selected>INR (₹)</option>
+      <option value="usd">USD ($)</option>
+      <option value="eur">EUR (€)</option>
+      <option value="gbp">GBP (£)</option>
+      <option value="jpy">JPY (¥)</option>
+    </select>
+
+    <button type="submit"
+      class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded font-bold transition-colors flex items-center justify-center">
+      Predict Price <i class="fas fa-chart-line ml-2"></i>
+    </button>
+  </form>
+
+  <div id="prediction-result" class="mt-6 text-xl"></div>
+
+  <a href="index.html"
+    class="mt-8 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-bold transition-colors flex items-center">
+    Back to Tracker <i class="fas fa-arrow-left ml-2"></i>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
+// 🧩 DOM Elements
+const btcCurrencyPricesEl = document.getElementById('btc-currency-prices');
+const bitcoinTypesPricesEl = document.getElementById('bitcoin-types-prices');
+const btcAmountInput = document.getElementById('btc-amount');
+const portfolioValueEl = document.getElementById('portfolio-value');
+const profitValueEl = document.getElementById('profit-value');
+const canvas = document.getElementById('price-chart');
+const priceChartCtx = canvas ? canvas.getContext('2d') : null;
+const currencySelect = document.getElementById('currency-select');
+const stockIndexValueEl = document.getElementById('stock-index-value');
+const stockIndexChangeEl = document.getElementById('stock-index-change');
+const newsListEl = document.getElementById('news-list');
+
+let priceChart;
+let price7DaysAgo = 0;
+let currentBtcPrices = {};
+
+// ⚙️ Config
+const currencies = ['inr', 'usd', 'eur', 'gbp', 'jpy'];
+const bitcoinTypes = [
+  { id: 'bitcoin', symbol: 'BTC' },
+  { id: 'bitcoin-cash', symbol: 'BCH' },
+  { id: 'wrapped-bitcoin', symbol: 'WBTC' },
+  { id: 'bitcoin-sv', symbol: 'BSV' },
+];
+
+// Helper: currency symbols
+function getCurrencySymbol(c) {
+  const map = { inr:'₹', usd:'$', eur:'€', gbp:'£', jpy:'¥' };
+  return map[c] || '';
+}
+
+// 🛠️ Fetch BTC prices
+async function fetchBtcPrices() {
+  const ids = bitcoinTypes.map(b => b.id).join(',');
+  const vs = currencies.join(',');
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${vs}&include_24hr_change=true`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    currentBtcPrices = data.bitcoin;
+
+    // Currencies list
+    btcCurrencyPricesEl.innerHTML = '';
+    currencies.forEach(c => {
+      const price = data.bitcoin[c];
+      const change = data.bitcoin[`${c}_24h_change`]?.toFixed(2) || '0.00';
+      const cls = (change >= 0) ? 'text-green-500' : 'text-red-500';
+      const symbol = getCurrencySymbol(c);
+      const li = document.createElement('li');
+      li.className = 'flex justify-between';
+      li.innerHTML = `<span>${c.toUpperCase()}</span><span>${symbol}${price.toLocaleString({minimumFractionDigits:2,maximumFractionDigits:2})} <span class="${cls} ml-2">${change >= 0 ? '+' : ''}${change}%</span></span>`;
+      btcCurrencyPricesEl.appendChild(li);
+    });
+
+    // Bitcoin types
+    bitcoinTypesPricesEl.innerHTML = '';
+    bitcoinTypes.forEach(t => {
+      if (data[t.id]) {
+        const price = data[t.id].inr;
+        const li = document.createElement('li');
+        li.className = 'flex justify-between';
+        li.innerHTML = `<span>${t.symbol}</span><span>₹${price.toLocaleString({minimumFractionDigits:2,maximumFractionDigits:2})}</span>`;
+        bitcoinTypesPricesEl.appendChild(li);
+      }
+    });
+
+    updatePortfolioValue();
+
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// 💹 Portfolio value & profit
+function updatePortfolioValue() {
+  const btcAmt = parseFloat(btcAmountInput?.value);
+  const sel = currencySelect?.value;
+  if (!isNaN(btcAmt) && currentBtcPrices[sel]) {
+    const val = btcAmt * currentBtcPrices[sel];
+    const sym = getCurrencySymbol(sel);
+    portfolioValueEl.textContent = `${sym}${val.toLocaleString({minimumFractionDigits:2,maximumFractionDigits:2})}`;
+    updateProfitValue(btcAmt, sel);
+  } else {
+    portfolioValueEl.textContent = '₹0.00';
+    profitValueEl.textContent = '₹0.00';
+  }
+}
+
+function updateProfitValue(btcAmt, c) {
+  if (price7DaysAgo && currentBtcPrices[c]) {
+    const prof = btcAmt * (currentBtcPrices[c] - price7DaysAgo);
+    const sym = getCurrencySymbol(c);
+    const cls = (prof >= 0) ? 'text-green-500' : 'text-red-500';
+    profitValueEl.innerHTML = `<span class="${cls}">${prof >= 0 ? '+' : ''}${sym}${prof.toLocaleString({minimumFractionDigits:2,maximumFractionDigits:2})}</span>`;
+  } else {
+    profitValueEl.textContent = '₹0.00';
+  }
+}
+
+// 📈 Chart (7-day)
+async function fetchAndRenderChart() {
+  if (!priceChartCtx) return;
+  try {
+    const res = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=inr&days=7&interval=daily');
+    const data = await res.json();
+    const labels = data.prices.map(v => {
+      const d = new Date(v[0]);
+      return `${d.getDate()}/${d.getMonth()+1}`;
+    });
+    const prices = data.prices.map(v => v[1]);
+    price7DaysAgo = prices[0];
+
+    if (priceChart) priceChart.destroy();
+    priceChart = new Chart(priceChartCtx, {
+      type: 'line',
+      data: { labels, datasets: [{
+        label: 'BTC Price (INR)',
+        data: prices,
+        borderColor: '#f97316',
+        backgroundColor: 'rgba(249,115,22,0.2)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        borderWidth: 2,
+      }]},
+      options: {
+        responsive: true,
+        scales: {
+          x: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+          y: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+        },
+        plugins: { legend: { labels: { color: '#fff' } } }
+      }
+    });
+
+    updatePortfolioValue();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// 📊 Fetch Nifty 50
+async function fetchStockIndex() {
+  try {
+    const res = await fetch('https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5ENSEI');
+    const quote = (await res.json()).quoteResponse.result[0];
+    if (quote) {
+      const price = quote.regularMarketPrice;
+      const change = quote.regularMarketChangePercent.toFixed(2);
+      stockIndexValueEl.textContent = `₹${price.toLocaleString({minimumFractionDigits:2,maximumFractionDigits:2})}`;
+      stockIndexChangeEl.textContent = `${change >= 0 ? '+' : ''}${change}%`;
+      stockIndexChangeEl.className = change >= 0 ? 'text-green-500 ml-4' : 'text-red-500 ml-4';
+    }
+  } catch (e) {
+    console.error(e);
+    stockIndexValueEl.textContent = 'N/A';
+    stockIndexChangeEl.textContent = '';
+  }
+}
+
+// 📰 Dummy news
+async function fetchNews() {
+  const items = [
+    { title: 'Bitcoin hits new all‑time high', url: 'https://www.coindesk.com/bitcoin-hits-new-high' },
+    { title: 'Stock markets rally amid economic optimism', url: 'https://www.reuters.com/markets' },
+    { title: 'Cryptocurrency regulations tighten globally', url: 'https://www.bloomberg.com/crypto-regulations' },
+    { title: 'Nifty 50 closes at record high', url: 'https://www.moneycontrol.com/markets/nifty-50' },
+    { title: 'Bitcoin adoption grows in emerging markets', url: 'https://www.forbes.com/bitcoin-adoption' },
+  ];
+  newsListEl.innerHTML = '';
+  items.forEach(n => {
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="${n.url}" target="_blank" class="text-orange-500 hover:underline">${n.title}</a>`;
+    newsListEl.appendChild(li);
+  });
+}
+
+// 🕒 Events & on‑load
+btcAmountInput?.addEventListener('input', updatePortfolioValue);
+currencySelect?.addEventListener('change', updatePortfolioValue);
+
+fetchBtcPrices();
+fetchAndRenderChart();
+fetchStockIndex();
+fetchNews();
+
+setInterval(() => {
+  fetchBtcPrices();
+  fetchAndRenderChart();
+  fetchStockIndex();
+  fetchNews();
+}, 60000);
+
+// 📈 Prediction logic
+if (document.getElementById('prediction-form')) {
+  document.getElementById('prediction-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const date = document.getElementById('date-input').value;
+    const cur = document.getElementById('currency-select').value;
+    if (!date) {
+      document.getElementById('prediction-result').textContent = 'Please select a date.';
+      return;
+    }
+    const base = { inr:2_000_000, usd:25000, eur:23000, gbp:20000, jpy:2_800_000 };
+    const fluct = (Math.random()*10000) - 5000;
+    const p = base[cur] + fluct;
+    const sym = getCurrencySymbol(cur);
+    document.getElementById('prediction-result').textContent =
+      `Predicted BTC price on ${date} is ${sym}${p.toFixed(2)}`;
+  });
+}
